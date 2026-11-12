@@ -1,0 +1,6 @@
+{
+  "name": "East Gate | Modern Essentials & Wholesale Commerce",
+  "description": "East Gate dual-tier commerce platform with wholesale bulk pricing, variant inventory control, low-stock alerts, and fast encrypted checkout.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
