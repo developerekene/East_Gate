@@ -141,6 +141,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [authModalMode, setAuthModalMode] = useState<'signin' | 'signup'>('signin');
 
   useEffect(() => {
+    if (!auth) {
+      setAuthLoading(false);
+      return;
+    }
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setAuthLoading(false);
@@ -163,6 +167,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, [user]);
 
   const signIn = async (email: string, pass: string) => {
+    if (!auth) {
+      dispatch(addToast({ message: 'Authentication is not configured.', type: 'error' }));
+      throw new Error('Authentication is not configured.');
+    }
     dispatch(setLoading({ isLoading: true, message: 'Signing in...' }));
     try {
       await signInWithEmailAndPassword(auth, email, pass);
@@ -176,6 +184,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const signUp = async (email: string, pass: string, name: string) => {
+    if (!auth) {
+      dispatch(addToast({ message: 'Authentication is not configured.', type: 'error' }));
+      throw new Error('Authentication is not configured.');
+    }
     dispatch(setLoading({ isLoading: true, message: 'Creating your account...' }));
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
@@ -193,6 +205,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const signOutUser = async () => {
+    if (!auth) return;
     dispatch(setLoading({ isLoading: true, message: 'Signing out...' }));
     try {
       await signOut(auth);
